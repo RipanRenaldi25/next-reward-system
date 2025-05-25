@@ -28,9 +28,9 @@ export function DataTable({ columns, data = [] }) {
       <TableHeader>
         {table.getHeaderGroups().map((headerGroup) => (
           <TableRow key={headerGroup.id}>
-            {headerGroup.headers.map((header) => {
+            {headerGroup.headers.map((header, i) => {
               return (
-                <TableHead key={header.id}>
+                <TableHead key={i}>
                   {header.isPlaceholder
                     ? null
                     : flexRender(
