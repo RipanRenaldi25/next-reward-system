@@ -1,8 +1,9 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
 import { getUserLogin } from "@/utils/api/User";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 
@@ -28,6 +29,13 @@ const HistoryLayout = ({ children }) => {
     fetchUser();
   }, []);
 
+  const router = useRouter();
+
+  const handleLogout = () => {
+    localStorage.removeItem("accessToken");
+    router.replace("/");
+  };
+
   return (
     <div className="min-h-screen flex flex-col bg-[#eee]">
       <ToastContainer />
@@ -40,6 +48,7 @@ const HistoryLayout = ({ children }) => {
           <span className="bg-yellow-400 px-3 py-1 rounded-full font-semibold">
             🪙 {user.points} Coins
           </span>
+          <Button onClick={handleLogout}>Logout</Button>
         </div>
       </header>
 
