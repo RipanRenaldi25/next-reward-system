@@ -1,4 +1,3 @@
-import { Button } from "@/components/ui/button";
 import { CircleCheck, CircleX, Eye } from "lucide-react";
 
 export default function columns(
@@ -30,20 +29,30 @@ export default function columns(
       accessorKey: "id",
       header: "Action",
       cell: ({ row }) => {
-        console.log({ row: row.original });
+        const status = row.original.status;
+        const isDisabled = status === "approved" || status === "rejected";
+
         return (
-          <div className="flex gap-2">
+          <div className="flex gap-2 items-center">
             <Eye
               className="cursor-pointer"
               onClick={() => onView(row.original)}
             />
             <CircleCheck
-              className="text-green-400 cursor-pointer"
-              onClick={() => onAccept(row.original)}
+              className={`cursor-pointer ${
+                isDisabled ? "opacity-50 cursor-not-allowed" : "text-green-500"
+              }`}
+              onClick={() => {
+                if (!isDisabled) onAccept(row.original);
+              }}
             />
             <CircleX
-              className="text-red-400 cursor-pointer"
-              onClick={() => onReject(row.original)}
+              className={`cursor-pointer ${
+                isDisabled ? "opacity-50 cursor-not-allowed " : "text-red-500"
+              }`}
+              onClick={() => {
+                if (!isDisabled) onReject(row.original);
+              }}
             />
           </div>
         );
