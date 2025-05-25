@@ -1,8 +1,14 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { upload } from "@/utils/api/User";
-import React, { useActionState, useCallback, useRef, useState } from "react";
+import { createAdmin, upload } from "@/utils/api/User";
+import React, {
+  useActionState,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { useDropzone } from "react-dropzone";
 import { toast } from "react-toastify";
 import Webcam from "react-webcam";

@@ -22,8 +22,10 @@ const Login = () => {
       toast.success(state.message);
       localStorage.setItem("accessToken", state.accessToken);
       localStorage.setItem("role", state.role);
+      console.log(state.role);
       if (state.role === "admin") {
         router.replace("/dashboard/admin");
+        return;
       }
       router.replace("/dashboard/user");
     }

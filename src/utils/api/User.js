@@ -3,6 +3,7 @@ import jwt from "jsonwebtoken";
 import { prismaClient } from "../prismaClient";
 import fs from "fs";
 import path from "path";
+import bcrypt from "bcrypt";
 
 export const getUserLogin = async (acessToken) => {
   try {
@@ -87,5 +88,92 @@ export const getUserHistory = async (accessToken) => {
       err: "something error",
       message: err.messsage,
     };
+  }
+};
+
+export const createAdmin = async () => {
+  try {
+    const isUserExists = await prismaClient.user.findUnique({
+      where: {
+        username: "admin",
+      },
+    });
+    if (!!isUserExists) {
+      return;
+    }
+    const password = await bcrypt.hash("password", 10);
+    await prismaClient.user.create({
+      data: {
+        username: "admin",
+        password: password,
+        points: 0,
+        role: "admin",
+      },
+    });
+    console.log("ready");
+  } catch (err) {
+    console.log({ err });
+  }
+};
+
+export const getAllUploads = async () => {
+  try {
+    const uploads = await prismaClient.upload.findMany({});
+    return {
+      data: uploads,
+      message: "data retrieved",
+    };
+  } catch (err) {
+    return { err: err.message };
+  }
+};
+
+export const acceptReward = async (row) => {
+  try {
+    await prismaClient.$transaction(async (trx) => {
+      await trx.upload.update({
+        where: {
+          id: row.id,
+        },
+        data: {
+          status: "approved",
+        },
+      });
+      const user = await trx.user.update({
+        where: {
+          id: row.userId,
+        },
+        data: {
+          points: {
+            increment: 10,
+          },
+        },
+      });
+    });
+    return {
+      message: "reward approved",
+    };
+  } catch (err) {
+    return { err: err.message };
+  }
+};
+
+export const reject = async (row) => {
+  try {
+    await prismaClient.$transaction(async (trx) => {
+      await trx.upload.update({
+        where: {
+          id: row.id,
+        },
+        data: {
+          status: "rejected",
+        },
+      });
+    });
+    return {
+      message: "Reward rejected",
+    };
+  } catch (err) {
+    return { err: err.message };
   }
 };

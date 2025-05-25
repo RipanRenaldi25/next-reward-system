@@ -1,8 +1,17 @@
 "use client";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { useEffect } from "react";
+import { createAdmin } from "@/utils/api/User";
 
 export default function Home() {
+  useEffect(() => {
+    const seedAdmin = async () => {
+      createAdmin();
+    };
+    seedAdmin();
+  }, []);
+
   return (
     <main className="min-h-screen flex flex-col items-center justify-center bg-gray-100 p-4">
       <div className="max-w-md w-full bg-white p-8 rounded-2xl shadow-lg text-center space-y-4">
