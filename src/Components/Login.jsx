@@ -35,7 +35,12 @@ const Login = () => {
   }, [state.accessToken, state.message, state.error, router]);
   return (
     <div className="space-y-3">
-      <h1 className="font-semibold text-lg">Login</h1>
+      <h1 className="font-semibold text-lg">
+        Login{" "}
+        <span className="text-slate-300">
+          (akun admin, username: admin, password: password)
+        </span>
+      </h1>
       <form action={action} className="space-y-4 ">
         <div className="flex flex-col gap-2">
           <Label htmlFor="username">Username</Label>
